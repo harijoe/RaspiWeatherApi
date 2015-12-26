@@ -33,4 +33,5 @@ module.exports = function (shipit) {
         shipit.log('Install Done!');
       });
   });
+
 };
