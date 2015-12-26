@@ -8,7 +8,6 @@ module.exports = function (shipit) {
       repositoryUrl: 'https://github.com/harijoe/RaspiWeatherApi',
       ignores: ['.git'],
       keepReleases: 3,
-      shallowClone: true,
       shared: {
         overwrite: true,
         dirs: [
