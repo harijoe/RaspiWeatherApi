@@ -38,3 +38,7 @@ gulp.task('default', [
   'develop',
   'watch'
 ]);
+
+gulp.task('build', [
+  'sass'
+]);
