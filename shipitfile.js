@@ -6,7 +6,7 @@ module.exports = function (shipit) {
     default: {
       workspace: '/tmp/raspi-weather-api',
       repositoryUrl: 'https://github.com/harijoe/RaspiWeatherApi',
-      ignores: ['.git', 'node_modules'],
+      ignores: ['.git'],
       keepReleases: 3,
       shallowClone: true,
       shared: {
@@ -27,22 +27,8 @@ module.exports = function (shipit) {
     return shipit.remote("cd " + shipit.releasePath + " && npm install");
   };
 
-  var gulpBuild = function () {
-    return shipit.remote("cd " + shipit.releasePath + " && ./node_modules/.bin/gulp");
-  };
-
-  var foreverStart = function() {
-    return shipit.remote("cd " + shipit.releasePath + " && ./node_modules/.bin/forever start app.js");
-  };
-
-  shipit.on('shared:link:files', function() {
-    return shipit.start('install');
-  });
-
-  shipit.blTask('install', function() {
+  shipit.on('published', function() {
     return npmInstall()
-      .then(gulpBuild)
-      .then(foreverStart)
       .then(function () {
         shipit.log('Install Done!');
       });
