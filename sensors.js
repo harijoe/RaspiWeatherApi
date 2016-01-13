@@ -6,8 +6,10 @@ exports = module.exports = function (sp, db, io) {
   sp.on("data", function (rawData) {
     try {
       debug("Receiving data from sensors");
+      console.log('Receiving data');
       var data = JSON.parse(rawData);
       if (data['lumi']) {
+        console.log('Emitting data');
         io.emit('arduino_emitting', data);
       }
 
