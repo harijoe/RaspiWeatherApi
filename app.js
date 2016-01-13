@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var serialPortFactory = require("serialport");
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -12,14 +13,9 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-server.listen(3000);
+var arduinoPort = '/dev/ttyACM0';
 
-io.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(data);
-  });
-});
+server.listen(3000);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -32,6 +28,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Serial port
+var SerialPort = serialPortFactory.SerialPort;
+var sp;
+try {
+  sp = new SerialPort(arduinoPort, {
+    parser: serialPortFactory.parsers.readline("\n")
+  });
+} catch (e) {
+  sp = null;
+}
+
+var sensors = require('./sensors')(sp, io);
 
 app.use('/', routes);
 app.use('/users', users);
