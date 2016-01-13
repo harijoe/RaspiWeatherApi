@@ -40,6 +40,12 @@ try {
   sp = null;
 }
 
+io.on('connection', function (socket) {
+  socket.on('take_picture', function() {
+    console.log('Take picture');
+  });
+});
+
 var sensors = require('./sensors')(sp, io);
 
 app.use('/', routes);
