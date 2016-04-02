@@ -7,7 +7,7 @@ const imgTmpPath = '/tmp/cam.jpg';
 var takePhoto =  function (io) {
   console.log('Start take photo script');
 
-  exec('raspistill -q 10 -vf -hf -o ' + imgTmpPath, function (err, stdout, stderr) {
+  exec('raspistill -q 10 -o ' + imgTmpPath, function (err, stdout, stderr) {
     if (err) {
       throw err;
     } else {
@@ -19,7 +19,7 @@ var takePhoto =  function (io) {
   function sendImg() {
     var s3obj = new AWS.S3({params: {
       Bucket: 'home-juju-ire',
-      Key: 'test',
+      Key: 'cam.jpg',
       ACL: 'public-read',
     }});
     var body = fs.createReadStream(imgTmpPath);
