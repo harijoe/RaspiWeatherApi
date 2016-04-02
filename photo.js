@@ -1,6 +1,5 @@
 var fs = require('fs');
 var AWS = require('aws-sdk');
-const Imagemin = require('imagemin');
 var exec = require('child_process').exec;
 
 const imgTmpPath = '/tmp/cam.jpg';
@@ -21,15 +20,6 @@ var takePhoto =  function () {
       return sendImg();
     }
   });
-
-  function takePic() {
-    imgMin.run(function (err, files) {
-      if(err) throw err;
-      console.log(files);
-      console.log('Photo minified');
-      return sendImg();
-    });
-  }
 
   function sendImg() {
     var s3obj = new AWS.S3({params: {

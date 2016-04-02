@@ -30,9 +30,13 @@ module.exports = function (shipit) {
     return shipit.remote("cd " + shipit.releasePath + " && forever -l /var/log/WeatherApi/forever.log restart /var/www/WeatherApi/current/app.js")
   };
 
-  shipit.on('published', function() {
+  shipit.on('updated', function () {
+    return shipit.start('install');
+  });
+
+  shipit.blTask('install', function () {
     return npmInstall()
-        .then(restartForever())
+      .then(restartForever)
       .then(function () {
         shipit.log('Install Done!');
       });
