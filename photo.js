@@ -4,6 +4,17 @@ var exec = require('child_process').exec;
 
 const imgTmpPath = '/tmp/cam.jpg';
 
+function makeid()
+{
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for( var i=0; i < 8; i++ )
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+  return text;
+}
+
 var takePhoto =  function (io) {
 
   console.log('Start take photo script');
@@ -19,9 +30,11 @@ var takePhoto =  function (io) {
 
 
   function sendImg() {
+    var hashCode = makeid();
+
     var s3obj = new AWS.S3({params: {
       Bucket: 'home-juju-ire',
-      Key: 'cam.jpg',
+      Key: hashCode+'cam.jpg',
       ACL: 'public-read',
     }});
     var body = fs.createReadStream(imgTmpPath);
