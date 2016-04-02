@@ -3,9 +3,8 @@ var AWS = require('aws-sdk');
 var exec = require('child_process').exec;
 
 const imgTmpPath = '/tmp/cam.jpg';
-const targetFolder = '/tmp/cam/';
 
-var takePhoto =  function () {
+var takePhoto =  function (io) {
   console.log('Start take photo script');
 
   exec('raspistill -q 10 -vf -hf -o ' + imgTmpPath, function (err, stdout, stderr) {
@@ -13,7 +12,7 @@ var takePhoto =  function () {
       throw err;
     } else {
       console.log('Photo taken');
-      return sendImg();
+      sendImg();
     }
   });
 
@@ -25,13 +24,13 @@ var takePhoto =  function () {
     }});
     var body = fs.createReadStream(imgTmpPath);
 
-    return s3obj.upload({Body: body}).on('httpUploadProgress', function (evt) {
+    s3obj.upload({Body: body}).on('httpUploadProgress', function (evt) {
       console.log(evt);
     }).send(function (err, data) {
       console.log(err, data);
       console.log('Photo sent');
 
-      return data['Location'];
+      io.emit('photo_ready', data['Location']);
     });
   }
 };

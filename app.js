@@ -46,9 +46,7 @@ var takePhoto = require('./photo');
 io.on('connection', function (socket) {
   socket.on('take_picture', function() {
     console.log('Received take_picture event');
-    var url = takePhoto();
-    if (url) console.log('Everything went well, the photo is here:'+url);
-    else console.log('Something is fucked :/');
+    takePhoto(io);
   });
 });
 
