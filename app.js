@@ -40,13 +40,16 @@ try {
   sp = null;
 }
 
+var sensors = require('./sensors')(sp, io);
+var takePhoto = require('./photo');
+
 io.on('connection', function (socket) {
   socket.on('take_picture', function() {
-    console.log('Take picture');
+    console.log('Received take_picture event');
+    var url = takePhoto();
+    console.log('Everything went well, the photo is here:'+url);
   });
 });
-
-var sensors = require('./sensors')(sp, io);
 
 app.use('/', routes);
 app.use('/users', users);
