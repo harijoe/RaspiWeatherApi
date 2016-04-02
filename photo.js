@@ -7,10 +7,6 @@ const targetFolder = '/tmp/cam/';
 
 var takePhoto =  function () {
   console.log('Start take photo script');
-  var imgMin = new Imagemin()
-    .src(imgTmpPath)
-    .dest(targetFolder)
-    .use(Imagemin.jpegtran({progressive: true}));
 
   exec('raspistill -q 10 -vf -hf -o ' + imgTmpPath, function (err, stdout, stderr) {
     if (err) {
