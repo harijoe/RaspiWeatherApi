@@ -7,7 +7,7 @@ const imgTmpPath = '/tmp/cam.jpg';
 var takePhoto =  function (io) {
   console.log('Start take photo script');
 
-  exec('raspistill -q 10 -o ' + imgTmpPath, function (err, stdout, stderr) {
+  exec('raspistill -q 10 -w 1920 -h 1080 -o ' + imgTmpPath, function (err, stdout, stderr) {
     if (err) {
       throw err;
     } else {
