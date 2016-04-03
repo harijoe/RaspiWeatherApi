@@ -19,7 +19,7 @@ var takePhoto =  function (io) {
 
   console.log('Start take photo script');
 
-  exec('raspistill -q 10 -w 1920 -h 1080 -o ' + imgTmpPath, function (err, stdout, stderr) {
+  exec('raspistill -q 20 -w 1080 -h 720 -o ' + imgTmpPath, function (err, stdout, stderr) {
     if (err) {
       console.log ('!Aborting photo taking')
     } else {
@@ -30,6 +30,7 @@ var takePhoto =  function (io) {
 
 
   function sendImg() {
+    io.emit('photo_status', 'Storing image');
     var hashCode = makeid();
 
     var s3obj = new AWS.S3({params: {
